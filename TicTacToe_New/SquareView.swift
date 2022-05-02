@@ -12,12 +12,11 @@ class SquareView: UIView {
     var squareButton: UIButton!
     var squareLabel: UILabel!
     var onButtonSelection: (() -> Void)?
-    var isValueSet = false
+    var isValueSet: Bool = false
     
     init() {
         super.init(frame: .zero)
         activateView()
-        squareButton.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -29,22 +28,32 @@ class SquareView: UIView {
         initSquareButton()
         activateLabel()
         activateConstraints()
+        
+        squareButton.addTarget(self, action: #selector(buttonPressed),for: .touchUpInside)
     }
-    
-    var count = 0
     
     @objc private func buttonPressed() {
         onButtonSelection?()
     }
+    
+    func set(value: String) {
+        if !isValueSet {
+            squareLabel.text = value
+        }
+            isValueSet = true
+    }
+    
+    func clearData() {
+        isValueSet = false
+        squareLabel.text = ""
+    }
 }
 
 extension SquareView {
-    
     fileprivate func initSquareLabel() {
         squareLabel = UILabel()
-        squareLabel.textColor = .white
-        squareLabel.text = "X"
-        squareLabel.font = .systemFont(ofSize: 55)
+        squareLabel.textColor = .black
+        squareLabel.font = .systemFont(ofSize: 75)
         squareLabel.textAlignment = .center
         squareLabel.translatesAutoresizingMaskIntoConstraints = false
     }
